@@ -44,6 +44,8 @@ import org.springframework.samples.petclinic.model.NamedEntity;
 @Table(name = "pets")
 public class Pet extends NamedEntity {
 
+	private static final long serialVersionUID = 1;
+
 	@Column(name = "birth_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthDate;

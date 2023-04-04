@@ -28,5 +28,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "specialties")
 public class Specialty extends NamedEntity {
+	private static final long serialVersionUID = 1;
 
 }

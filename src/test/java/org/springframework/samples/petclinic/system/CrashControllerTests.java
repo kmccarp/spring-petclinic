@@ -35,9 +35,7 @@ class CrashControllerTests {
 
 	@Test
 	void testTriggerException() throws Exception {
-		RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-			testee.triggerException();
-		});
+		RuntimeException thrown = assertThrows(RuntimeException.class, testee::triggerException);
 
 		assertEquals("Expected: controller used to showcase what happens when an exception is thrown",
 				thrown.getMessage());

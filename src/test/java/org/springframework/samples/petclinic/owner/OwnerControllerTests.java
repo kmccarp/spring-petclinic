@@ -89,9 +89,9 @@ class OwnerControllerTests {
 
 		Owner george = george();
 		given(this.owners.findByLastName(eq("Franklin"), any(Pageable.class)))
-			.willReturn(new PageImpl<Owner>(Lists.newArrayList(george)));
+			.willReturn(new PageImpl<>(Lists.newArrayList(george)));
 
-		given(this.owners.findAll(any(Pageable.class))).willReturn(new PageImpl<Owner>(Lists.newArrayList(george)));
+		given(this.owners.findAll(any(Pageable.class))).willReturn(new PageImpl<>(Lists.newArrayList(george)));
 
 		given(this.owners.findById(TEST_OWNER_ID)).willReturn(george);
 		Visit visit = new Visit();
@@ -140,14 +140,14 @@ class OwnerControllerTests {
 
 	@Test
 	void testProcessFindFormSuccess() throws Exception {
-		Page<Owner> tasks = new PageImpl<Owner>(Lists.newArrayList(george(), new Owner()));
+		Page<Owner> tasks = new PageImpl<>(Lists.newArrayList(george(), new Owner()));
 		Mockito.when(this.owners.findByLastName(anyString(), any(Pageable.class))).thenReturn(tasks);
 		mockMvc.perform(get("/owners?page=1")).andExpect(status().isOk()).andExpect(view().name("owners/ownersList"));
 	}
 
 	@Test
 	void testProcessFindFormByLastName() throws Exception {
-		Page<Owner> tasks = new PageImpl<Owner>(Lists.newArrayList(george()));
+		Page<Owner> tasks = new PageImpl<>(Lists.newArrayList(george()));
 		Mockito.when(this.owners.findByLastName(eq("Franklin"), any(Pageable.class))).thenReturn(tasks);
 		mockMvc.perform(get("/owners?page=1").param("lastName", "Franklin"))
 			.andExpect(status().is3xxRedirection())
@@ -156,7 +156,7 @@ class OwnerControllerTests {
 
 	@Test
 	void testProcessFindFormNoOwnersFound() throws Exception {
-		Page<Owner> tasks = new PageImpl<Owner>(Lists.newArrayList());
+		Page<Owner> tasks = new PageImpl<>(Lists.newArrayList());
 		Mockito.when(this.owners.findByLastName(eq("Unknown Surname"), any(Pageable.class))).thenReturn(tasks);
 		mockMvc.perform(get("/owners?page=1").param("lastName", "Unknown Surname"))
 			.andExpect(status().isOk())
@@ -229,10 +229,7 @@ class OwnerControllerTests {
 					@SuppressWarnings("unchecked")
 					List<Pet> pets = (List<Pet>) item;
 					Pet pet = pets.get(0);
-					if (pet.getVisits().isEmpty()) {
-						return false;
-					}
-					return true;
+                    return !(pet.getVisits().isEmpty());
 				}
 
 				@Override
